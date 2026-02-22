@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 
 //custom round button component, we will used this widget show to show button
 // this widget is generic, we can change it and this change will appear across the app
-class RoundButton extends StatelessWidget {
+class RoundButton extends StatefulWidget {
   final String title;
   final bool loading;
   final VoidCallback onPress;
-
   const RoundButton({
     super.key,
     required this.title,
@@ -17,13 +16,20 @@ class RoundButton extends StatelessWidget {
   });
 
   @override
+  State<RoundButton> createState() => _RoundButtonState();
+}
+
+class _RoundButtonState extends State<RoundButton> {
+  @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: onPress,
+      onPressed: widget.onPress,
+      style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
       child: Center(
-        child: loading
+        child: widget.loading
             ? const LoadingWidget()
-            : Text(title, style: const TextStyle(color: AppColors.whiteColor)),
+            : Text(widget.title,
+                style: const TextStyle(color: AppColors.whiteColor)),
       ),
     );
   }

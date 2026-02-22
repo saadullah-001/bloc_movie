@@ -1,4 +1,5 @@
-import 'package:bloc_movies/views/auth_views/splash_screen/splash_screen.dart';
+import 'package:bloc_movies/config/routes/routes.dart';
+import 'package:bloc_movies/config/routes/routes_name.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,7 +16,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const SplashScreen(),
+      initialRoute: RoutesName.splash,
+      onGenerateRoute: Routes.generateRoute,
     );
   }
 }

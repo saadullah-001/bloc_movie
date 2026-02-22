@@ -4,16 +4,20 @@ class ApiResponse<T> {
   final String? message;
   final T? data;
   final ApiStatus status;
+  final ExceptionType? exception;
 
-  const ApiResponse._({required this.status, this.data, this.message});
+  const ApiResponse._(
+      {required this.status, this.data, this.message, this.exception});
+
+  const ApiResponse.initial() : this._(status: ApiStatus.initial);
 
   const ApiResponse.loading() : this._(status: ApiStatus.loading);
 
   const ApiResponse.completed(T data)
-    : this._(status: ApiStatus.completed, data: data);
+      : this._(status: ApiStatus.completed, data: data);
 
-  const ApiResponse.error(String message)
-    : this._(status: ApiStatus.error, message: message);
+  const ApiResponse.error(String message, ExceptionType exception)
+      : this._(status: ApiStatus.error, message: message, exception: exception);
 
   @override
   String toString() {

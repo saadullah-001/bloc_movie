@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:bloc_movies/data/exceptions/app_exceptions.dart';
 import 'package:bloc_movies/data/network/base_api_services.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkApiServices implements BaseApiServices {
@@ -10,9 +11,8 @@ class NetworkApiServices implements BaseApiServices {
   Future<dynamic> getApi(String url) async {
     dynamic responseJson;
     try {
-      final response = await http
-          .get(Uri.parse(url))
-          .timeout(const Duration(seconds: 30));
+      final response =
+          await http.get(Uri.parse(url)).timeout(const Duration(seconds: 30));
       responseJson = returnResponse(response);
     } on TimeoutException {
       throw TimerOutException();
@@ -26,7 +26,7 @@ class NetworkApiServices implements BaseApiServices {
   }
 
   @override
-  Future<dynamic> postApi(String url, data, header) async {
+  Future<dynamic> postApi(String url, data, dynamic header) async {
     dynamic responseJson;
     try {
       final response = await http
@@ -48,11 +48,13 @@ class NetworkApiServices implements BaseApiServices {
 dynamic returnResponse(http.Response response) {
   switch (response.statusCode) {
     case 200:
+      print("hello");
+
       dynamic responseJson = jsonDecode(response.body);
       return responseJson;
     case 400:
-      dynamic responseJson = jsonDecode(response.body);
-      return responseJson;
+      //  final responseBody = jsonDecode(response.body);
+      throw BadRequestException(message: response.body.toString());
     case 401:
       throw BadRequestException(message: response.body.toString());
     case 404:

@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:bloc_movies/data/exceptions/app_exceptions.dart';
 import 'package:bloc_movies/data/network/base_api_services.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkApiServices implements BaseApiServices {
@@ -48,8 +46,6 @@ class NetworkApiServices implements BaseApiServices {
 dynamic returnResponse(http.Response response) {
   switch (response.statusCode) {
     case 200:
-      print("hello");
-
       dynamic responseJson = jsonDecode(response.body);
       return responseJson;
     case 400:

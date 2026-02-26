@@ -17,6 +17,10 @@ class Routes {
         return MaterialPageRoute(
           builder: (BuildContext context) => const HomeScreen(),
         );
+      case RoutesName.movieScreen:
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const MovieScreen(),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) =>

@@ -29,30 +29,29 @@ class _SubmitButtonState extends State<SubmitButton> {
   Widget build(BuildContext context) {
     debugPrint("Submit button build");
     return BlocConsumer<LoginBloc, LoginStates>(
-        listener: (context, state) {
-          if (state.response.status == ApiStatus.error) {
-            ToastMessage.toastMessage(
-                message: state.response.message.toString());
-          } else if (state.response.status == ApiStatus.loading) {
-            ToastMessage.toastMessage(message: 'Submitting');
-          } else if (state.response.status == ApiStatus.completed) {
-            Navigator.pushReplacementNamed(context, RoutesName.home);
-          }
-        },
-        buildWhen: (previous, current) =>
-            previous.response.status != previous.response.status,
-        builder: (context, state) {
-          return RoundButton(
-            title: 'Login',
-            loading: state.response.status == ApiStatus.loading,
-            onPress: () {
-              if (state.response.status == ApiStatus.loading) {
-              } else {
-                login();
-              }
-            },
-          );
-        });
-    ;
+      listener: (context, state) {
+        if (state.response.status == ApiStatus.error) {
+          ToastMessage.toastMessage(message: state.response.message.toString());
+        } else if (state.response.status == ApiStatus.loading) {
+          ToastMessage.toastMessage(message: 'Submitting');
+        } else if (state.response.status == ApiStatus.completed) {
+          Navigator.pushReplacementNamed(context, RoutesName.movieScreen);
+        }
+      },
+      buildWhen: (previous, current) =>
+          previous.response.status != previous.response.status,
+      builder: (context, state) {
+        return RoundButton(
+          title: 'Login',
+          loading: state.response.status == ApiStatus.loading,
+          onPress: () {
+            if (state.response.status == ApiStatus.loading) {
+            } else {
+              login();
+            }
+          },
+        );
+      },
+    );
   }
 }

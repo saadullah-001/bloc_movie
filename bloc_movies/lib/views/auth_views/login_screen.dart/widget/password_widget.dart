@@ -29,7 +29,7 @@ class _PasswordWidgetState extends State<PasswordWidget> {
   @override
   void dispose() {
     _passwordController.dispose();
-    widget.passwordFocus.dispose();
+
     super.dispose();
   }
 

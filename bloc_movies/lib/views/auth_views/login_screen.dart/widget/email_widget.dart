@@ -32,7 +32,7 @@ class _EmailWidgetState extends State<EmailWidget> {
   void dispose() {
     _emailController.dispose();
     _emailFocus.dispose();
-    widget.passwordFocus.dispose();
+
     super.dispose();
   }
 

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:bloc_movies/bloc/authBloc/auth_bloc.dart';
 import 'package:bloc_movies/data/exceptions/app_exceptions.dart';
 import 'package:bloc_movies/data/response/api_response.dart';
 import 'package:bloc_movies/models/userModel/user_model.dart';
@@ -12,9 +13,11 @@ part 'login_events.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvents, LoginStates> {
-  final AuthApiRepository authApiRepository = AuthHttpApiRepository();
+  final AuthApiRepository authApiRepository;
+  final AuthBloc auth;
 
-  LoginBloc() : super(const LoginStates()) {
+  LoginBloc({required this.authApiRepository, required this.auth})
+      : super(const LoginStates()) {
     on<EmailEvent>(emailEvent);
     on<PasswordEvent>(passwordEvent);
     on<LoginSubmitEvent>(loginEvent, transformer: droppable());
@@ -33,20 +36,22 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
       'username': state.email,
       'password': state.password
     };
-    print(state.email);
-    print(state.password);
+
     try {
       emit(state.copyWith(response: ApiResponse.loading()));
       final UserModel userData =
           await authApiRepository.loginApi(AppUrls.loginEndpoint, data);
       emit(state.copyWith(response: ApiResponse.completed(userData)));
+      auth.add(AuthSuccess(user: userData, token: userData.token));
     } on AppExceptions catch (e) {
       emit(state.copyWith(
           response: ApiResponse.error(e.toString(), e.exceptionType)));
+      auth.add(AuthFailed());
     } catch (e) {
       emit(state.copyWith(
           response:
               ApiResponse.error(e.toString(), ExceptionType.systemException)));
+      auth.add(AuthFailed());
     }
   }
 }
